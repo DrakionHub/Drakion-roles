@@ -26,14 +26,14 @@ class CargoButtons(View):
     async def toggle_role(self, interaction: discord.Interaction, role_id: int):
         role = interaction.guild.get_role(role_id)
         if not role:
-            return await interaction.response.send_message("Erro: Cargo não encontrado no servidor.", ephemeral=True)
+            return await interaction.response.send_message("Error: Job title not found on the server.", ephemeral=True)
 
         if role in interaction.user.roles:
             await interaction.user.remove_roles(role)
-            await interaction.response.send_message(f"✅ Você removeu o cargo: **{role.name}**", ephemeral=True)
+            await interaction.response.send_message(f"✅ You removed the role: **{role.name}**", ephemeral=True)
         else:
             await interaction.user.add_roles(role)
-            await interaction.response.send_message(f"✅ Você recebeu o cargo: **{role.name}**", ephemeral=True)
+            await interaction.response.send_message(f"✅ You received the role: **{role.name}**", ephemeral=True)
 
     @discord.ui.button(label="Script Updates", style=discord.ButtonStyle.primary, custom_id="btn_script")
     async def script_button(self, interaction: discord.Interaction, button: Button):
@@ -51,11 +51,11 @@ class CargoButtons(View):
     async def blox_button(self, interaction: discord.Interaction, button: Button):
         await self.toggle_role(interaction, ROLES_CONFIG["blox_news"])
 
-@bot.tree.command(name="setup_cargos", description="Envia o painel de cargos vermelhos")
+@bot.tree.command(name="setup_cargos", description="Send the job board.")
 async def setup_cargos(interaction: discord.Interaction):
     if not interaction.user.guild_permissions.administrator:
-        return await interaction.response.send_message("Sem permissão.", ephemeral=True)
-        
+        return await interaction.response.send_message("Without permission.", ephemeral=True)
+
     embed = discord.Embed(
         title="🐉 Drakion | Reaction Roles",
         description=(
@@ -79,13 +79,13 @@ async def setup_cargos(interaction: discord.Interaction):
     embed.set_thumbnail(url="https://cdn.discordapp.com/icons/1481089628374171651/de6d926a6fd65da6b783a0f96e929b49.png?size=2048")
     
     await interaction.channel.send(embed=embed, view=CargoButtons())
-    await interaction.response.send_message("Painel de cargos enviado com sucesso!", ephemeral=True)
+    await interaction.response.send_message("Job description sent successfully!", ephemeral=True)
 
 @bot.event
 async def on_ready():
     # Registra a View de forma persistente para funcionar após o bot reiniciar
     bot.add_view(CargoButtons())
     await bot.tree.sync()
-    print(f"Bot de Cargos Drakion Online! Logado como {bot.user}")
+    print(f"Drakion Online Job Bot! Logged in as {bot.user}")
 
 bot.run(TOKEN)
