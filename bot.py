@@ -51,12 +51,11 @@ class CargoButtons(View):
     async def blox_button(self, interaction: discord.Interaction, button: Button):
         await self.toggle_role(interaction, ROLES_CONFIG["blox_news"])
 
-@bot.tree.command(name="setup_cargos", description="Envia o painel de seleção de cargos")
+@bot.tree.command(name="setup_cargos", description="Envia o painel de cargos vermelhos")
 async def setup_cargos(interaction: discord.Interaction):
-    # Verificação básica de permissão (opcional)
     if not interaction.user.guild_permissions.administrator:
-        return await interaction.response.send_message("Você não tem permissão para usar este comando.", ephemeral=True)
-
+        return await interaction.response.send_message("Sem permissão.", ephemeral=True)
+        
     embed = discord.Embed(
         title="🐉 Drakion | Reaction Roles",
         description=(
